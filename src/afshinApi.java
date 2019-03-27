@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import org.json.*;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONWriter;
+import com.google.gson.*;
+
 
 public class afshinApi {
     private final String USER_AGENT = "Mozilla/5.0";
@@ -46,40 +48,74 @@ public class afshinApi {
         //System.out.println("\nSending 'GET' request to URL : " + url);
         //System.out.println("Response Code : " + responseCode);
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        JSONObject output = new JSONObject(response.toString());
-        JSONObject ja = output.getJSONObject("response");
-        JSONObject jo = ja.getJSONObject("data");
+        //String inputLine;
+//        
+//        StringBuffer response = new StringBuffer();
+//        while ((inputLine = in.readLine()) != null) {
+//            response.append(inputLine);
+//        }
+//        in.close();
+//        JSONObject output = new JSONObject(response.toString());
+//        JSONArray jay = output.toJSONArray(output.data[0]);
+//        //System.out.println(jay);
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while ((line = in.readLine()) != null) {
+        sb.append(line);
+    }
+        JSONObject json = new JSONObject(sb.toString());
+        
+       // System.out.println(json);
+//        JSONObject cleanSearch = json.getJSONObject("response").getJSONObject("data").getJSONObject("5").getJSONObject("Offer");
+       
+//        int cleanSearch = json.getJSONObject("response").getJSONObject("data").getJSONObject("5").getJSONObject("Offer").getInt("is_expired");
+
+          // HashMap isEx = new HashMap<String, int>("isExpired", cleanSearch);
+           
+     
+       String cleanSearch = json.getJSONObject("response").getJSONObject("data").getJSONObject("5").getJSONObject("Offer").getJSONObject("0").toString();
+
+    
+        System.out.println(cleanSearch);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+       // JsonElement je = jp.parse(json);
+        String prettyJsonString = gson.toJson(cleanSearch);
+        System.out.print(prettyJsonString);
         
         
-        JSONObject five = jo.getJSONObject("5");
+        //System.out.println(jsonArra);
         
-        JSONObject ofr = five.getJSONObject("Offer");
         
-        System.out.println(ofr.length());
+       // JSONObject jsonObj = new JSONObject(response.toString());
+        
+        
+        
+        
+       // JSONObject ja = output.getJSONObject("response");
+       // JSONObject jo = ja.getJSONObject("data");
+       // JSONObject five = jo.getJSONObject("5");
+        //JSONObject ofr = five.getJSONObject("Offer");
+        //System.out.println(output.length());
         
         //String xArr [][] = null;
         //String[] xArr = new String[100];
-        String elephant = ofr.toString(); 
-        String[] animals = elephant.split(",");  
+       // String elephant = ofr.toString(); 
+       // String[] animals = elephant.split(",");  
         
-            Map<String,String> testFive = new HashMap<String,String>();
-                       
-            
-
-            for (int i=0; i<animals.length; i++){
-                String lin = animals[i].toString()+ "#"; 
-                String[] insects = lin.split("#");
-                for (int b=0; b<insects.length;b++){
-                    String bog = insects[b];
-                    System.out.print(bog.replace("\""," ") + "\n");
-                    
-                }
+              //use this code block:         
+            //System.out.println(output.toString());
+//            Map<String,String> testFive = new HashMap<String,String>();
+//
+//            for (int i=0; i<animals.length; i++){
+//                String lin = animals[i].toString()+ "#"; 
+//                String[] insects = lin.split("#");
+//                for (int b=0; b<insects.length;b++){
+//                    String bog = insects[b];
+//                    //System.out.print(bog.replace("\""," ") + "\n");
+//                    
+//                }
 
                   //System.out.println(lin);
 //                String keyo = lin.substring(0,lin.indexOf(":"));
@@ -96,14 +132,9 @@ public class afshinApi {
             }
                              //System.out.println(testFive);
 
-       
 
     }
-}
 
-
-
-   
         //for(int i = 0; i < ofr.length(); i++){
             //String ts = ofr.getJSONObject(i.toString()).toString();
             //xArr = ArrayHelper.push(ofr.getJSONObject(i).toString());
